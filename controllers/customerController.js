@@ -27,7 +27,7 @@ exports.ingestCustomer = async (req, res) => {
   }
 
   try {
-  await host.xadd('customer_stream', '*', 'data', JSON.stringify(value));
+  await redis.xadd('customer_stream', '*', 'data', JSON.stringify(value));
   res.status(200).json({ status: 'queued' });
 } catch (err) {
   console.error('Redis xadd error:', err); // <-- Add this
