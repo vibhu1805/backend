@@ -6,7 +6,7 @@ const User = require('../models/User');
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: 'https://mini-crm-backend-84ex.onrender.com/auth/google/callback'
+  callbackURLI: 'https://mini-crm-backend-84ex.onrender.com/auth/google/callback'
 }, async (accessToken, refreshToken, profile, done) => {
   try {
     let user = await User.findOne({ googleId: profile.id });
