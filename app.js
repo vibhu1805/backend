@@ -8,7 +8,7 @@ require('./config/passport');
 
 const app = express();
 const cors = require('cors');
-app.use(cors({ origin: 'https://mini-crm-frontend-tw6z.vercel.app/', credentials: true }));
+app.use(cors({ origin: 'https://mini-crm-frontend-tw6z.vercel.app', credentials: true }));
 // Middlewares
 app.use(express.json());
 app.use(session({
