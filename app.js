@@ -8,20 +8,7 @@ require('./config/passport');
 
 const app = express();
 const cors = require('cors');
-const allowedOrigins = [
-  'http://localhost:3000',
-  'https://mini-crm-frontend-tw6z.vercel.app'
-];
-
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    }
-    return callback(new Error('Not allowed by CORS'));
-  },
-  credentials: true
-}));
+app.use(cors({ origin: 'https://mini-crm-frontend-tw6z.vercel.app/', credentials: true }));
 // Middlewares
 app.use(express.json());
 app.use(session({
@@ -50,7 +37,5 @@ const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
-app.get('/', (req, res) => {
-  res.send('Mini CRM Backend is running 🚀');
-});
+
 module.exports = app;
