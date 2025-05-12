@@ -16,25 +16,28 @@ const customerSchema = Joi.object({
   inactiveDays: Joi.number()
 });
 
+// In customerController.js
 exports.ingestCustomer = async (req, res) => {
-  const { error, value } = customerSchema.validate(req.body);
-  if (error) return res.status(400).json({ error: error.details[0].message });
-
-  // Check if user is authenticated
-  const user = req.user; // This comes from the JWT validation middleware
-  if (!user) {
-    return res.status(401).json({ error: 'Unauthorized: Invalid token' });
-  }
-
   try {
-  await redis.xadd('customer_stream', '*', 'data', JSON.stringify(value));
-  res.status(200).json({ status: 'queued' });
-} catch (err) {
-  console.error('Redis xadd error:', err); // <-- Add this
-  res.status(500).json({ error: 'Error adding customer to stream', details: err.message });
-}
+    const { name, email, phone } = req.body;
 
+    if (!name || !email || !phone) {
+      return res.status(400).json({ error: 'All fields are required' });
+    }
+
+    console.log('Received:', { name, email, phone });
+
+    const payload = JSON.stringify({ name, email, phone });
+
+    await redis.xadd('customer_stream', '*', 'data', payload);
+
+    return res.status(200).json({ message: 'Customer data queued successfully' });
+  } catch (err) {
+    console.error('❌ Backend Error:', err);
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
 };
+
 
 // Fetch all customers from the database
 exports.getAllCustomers = async (req, res) => {
