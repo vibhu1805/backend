@@ -39,6 +39,7 @@ const authMiddleware = require('../middleware/auth');
  *       401:
  *         description: Unauthorized
  */
+router.post('/', authMiddleware, customerController.ingestCustomer);
 /**
 * @swagger
  * /api/customers:
@@ -73,6 +74,6 @@ const authMiddleware = require('../middleware/auth');
  *         description: Internal Server Error
  */
 router.get('/', authMiddleware, customerController.getAllCustomers);
-router.post('/', authMiddleware, customerController.ingestCustomer);
+
 
 module.exports = router;
