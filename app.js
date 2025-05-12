@@ -7,6 +7,7 @@ require('dotenv').config();
 require('./config/passport');
 
 const app = express();
+const cors = require('cors');
 const allowedOrigins = [
   'http://localhost:3000',
   'https://mini-crm-frontend-tw6z.vercel.app'
