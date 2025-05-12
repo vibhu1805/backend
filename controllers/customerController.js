@@ -27,12 +27,13 @@ exports.ingestCustomer = async (req, res) => {
   }
 
   try {
-    // Add to Redis stream
-    await redis.xadd('customer_stream', '*', 'data', JSON.stringify(value));
-    res.status(200).json({ status: 'queued' });
-  } catch (err) {
-    res.status(500).json({ error: 'Error adding customer to stream' });
-  }
+  await redis.xadd('customer_stream', '*', 'data', JSON.stringify(value));
+  res.status(200).json({ status: 'queued' });
+} catch (err) {
+  console.error('Redis xadd error:', err); // <-- Add this
+  res.status(500).json({ error: 'Error adding customer to stream', details: err.message });
+}
+
 };
 
 // Fetch all customers from the database
